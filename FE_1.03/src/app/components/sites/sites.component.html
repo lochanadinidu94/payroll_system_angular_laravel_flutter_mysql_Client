@@ -1,0 +1,476 @@
+<!doctype html>
+<html>
+<html lang="en">
+
+<app-head-imports></app-head-imports>
+
+<script>
+  $(document).ready(function () {
+    $('[data-toggle="popover"]').popover();
+  });
+</script>
+
+<body class="fix-header fix-sidebar card-no-border">
+
+
+<div id="main-wrapper">
+  <header class="topbar">
+    <app-nav-bar>
+      <router-outlet></router-outlet>
+    </app-nav-bar>
+  </header>
+  <aside class="left-sidebar">
+    <app-side-bar></app-side-bar>
+  </aside>
+  <div class="page-wrapper">
+    <div class="container-fluid">
+
+      <div class="row">
+        <div class="col-sm-12">
+
+          <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#home">Add-Sites</a></li>
+            <li><a data-toggle="tab" href="#menu1">Add-Shifts</a></li>
+            <li><a data-toggle="tab" href="#menu2">All-Sites & Shifts</a></li>
+          </ul>
+
+          <div class="tab-content">
+
+
+            <div id="home" class="tab-pane fade in active">
+
+
+              <div class="col-sm-12">
+
+
+                <div class="col-sm-6">
+
+
+                  <!--                  <form class="form-group" method="post" (click)="saveNewSite()">-->
+
+                  <label>Site Name :</label>
+                  <input type="text" class="form-control border-primary" name="sitName" id="sitName"
+                         autocomplete="off" [(ngModel)]="NewSite.SiteName" #siteName>
+
+                  <label>Site Location :</label>
+                  <input type="text" class="form-control border-primary" name="sitLoc" id="sitLoc"
+                         (keydown.enter)="$event.preventDefault()" placeholder="Search Nearest Location"
+                         autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search
+                         [(ngModel)]="NewSite.SiteAddress">
+
+                  <label>Latitude :</label>
+                  <input type="text" class="form-control" name="Latitude" id="Latitude" autocomplete="off" disabled
+                         value="{{latitude}}" [(ngModel)]="NewSite.SiteLati" #liti>
+
+                  <label>Longitude :</label>
+                  <input type="text" class="form-control" name="Longitude" id="Longitude" autocomplete="off"
+                         disabled value="{{longitude}}" [(ngModel)]="NewSite.SiteLong" #long>
+
+                  <label>Status :</label>
+                  <select class="form-control border-primary" name="Status" [(ngModel)]="NewSite.SiteStates" #states>
+                    <option value="1">Active</option>
+                    <option value="0">In-Active</option>
+                  </select>
+
+                  <br>
+
+                  <button type="submit" class="btn  btn-primary"
+                          (click)="saveNewSite(siteName.value,search.value,states.value)">Add New
+                  </button>
+                  <hr class="solid">
+
+                  <!--                  </form>-->
+
+                  <div class="form-group">
+                    <label>Search :</label>
+                    <input type="text" class="form-control border-info" name="parsearch" #sitesearch>
+                  </div>
+
+                  <div class="form-group table-responsive">
+                    <table class="table table-bordered">
+                      <thead>
+                      <tr>
+                        <th>Site No</th>
+                        <th>Site Name</th>
+                        <th>Site Location</th>
+                        <th>Latitude</th>
+                        <th>Longitude</th>
+                        <th>States</th>
+                        <th>Update</th>
+
+                      </tr>
+                      </thead>
+
+                      <tbody>
+                      <tr *ngFor="let alls of allsites | paginate: {itemsPerPage:5, currentPage: sitepages }">
+                        <td>{{alls.Id}}</td>
+                        <td>{{alls.Name}}</td>
+                        <td>{{alls.Address}}</td>
+                        <td>{{alls.Lati}}</td>
+                        <td>{{alls.Lg}}</td>
+                        <td>{{alls.States == 1 ? 'True' : 'False'}}</td>
+                        <td>
+                          <button class="btn btn-success" data-toggle="modal" data-target="#updateSites"
+                                  (click)="loardSiteById(alls.Id)">Update
+                          </button>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                    <pagination-controls (pageChange)="sitepages=$event"></pagination-controls>
+                  </div>
+
+
+                </div>
+                <div class="col-sm-6">
+                  <br>
+                  <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" style="height: 65%"
+                           [fullscreenControl]='true'>
+                    <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+                                (dragEnd)="markerDragEnd($event)"></agm-marker>
+                  </agm-map>
+                </div>
+
+              </div>
+
+
+            </div>
+
+            <!--            update Sites-->
+
+            <div class="modal fade" id="updateSites" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle2">Update Sites Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+
+                  <div class="modal-body">
+
+
+                    <div class="col-sm-12">
+
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="form-group">
+                            <label>ID:</label>
+                            <input type="text" class="form-control" #SysUseId value="{{sitebyid}}" disabled>
+
+                            <label>New Site Name:</label>
+                            <input type="text" class="form-control" #SName name="Name"><br>
+
+                            <label>New Site Status:</label>
+                            <select class="form-control" #SysUseStatus>
+                              <option value="1">Active</option>
+                              <option value="0">In-Active</option>
+                            </select>
+
+                            <br>
+
+                            <button class="btn btn-success"
+                                    (click)="updatesiteByid(SysUseId.value,SName.value,SysUseStatus.value)">
+                              Update
+                            </button>
+                            <app-updatesuccessfullymsg *ngIf="updatestates"></app-updatesuccessfullymsg>
+                          </div>
+                        </div>
+                      </div>
+
+
+                    </div>
+
+
+                  </div>
+                  <div class="modal-footer">
+
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+
+            <!--            SHift Update-->
+            <div class="modal fade" id="updateShift" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle3">Update Shift Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+
+                  <div class="modal-body">
+
+
+                    <div class="col-sm-12">
+
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="form-group">
+                            <label>ID:</label>
+                            <input type="text" class="form-control" #Shid value="{{selectedshiftid}}" disabled>
+
+                            <label>New Shift Name:</label>
+                            <input type="text" class="form-control" #ShName name="Name"><br>
+
+                            <label>New Shift Status:</label>
+                            <select class="form-control" #ShStatus>
+                              <option value="1">Active</option>
+                              <option value="0">In-Active</option>
+                            </select>
+
+                            <br>
+
+                            <button class="btn btn-success"
+                                    (click)="updateShiftbyId(ShName.value,ShStatus.value)">
+                              Update
+                            </button>
+                            <app-updatesuccessfullymsg *ngIf="updatestatesmsg"></app-updatesuccessfullymsg>
+                          </div>
+                        </div>
+                      </div>
+
+
+                    </div>
+
+
+                  </div>
+                  <div class="modal-footer">
+
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+            <div id="menu1" class="tab-pane fade">
+
+              <div class="row">
+
+                <div class="col-sm-5">
+
+                  <label>Select Site:</label>
+                  <select class="form-control border-primary" name="selectsitebar" #selectsitebar
+                          (change)="loardSiteByIdtoShifts(selectsitebar.value)">
+                    <option *ngFor="let sit of allsitesforshift"
+                            [value]="sit.Id">{{sit.Id + ' - ' + sit.Name + ' - ' + sit.Address}}</option>
+                  </select>
+
+
+                  <label>Site No :</label>
+                  <input type="text" class="form-control border-primary" name="SiteNo" value="{{sitebyidtoId}}"
+                         disabled>
+
+                  <label>Site Name :</label>
+                  <input type="text" class="form-control border-primary" name="SiteName" value="{{sitebyidtoName}}"
+                         disabled>
+
+                  <hr class="solid">
+
+                  <label>Shift Name :</label>
+                  <input type="text" class="form-control border-primary" name="Shift_Name" #Shift_Name>
+
+                  <label>Shift Hours Type :</label>
+                  <select class="form-control border-primary" name="ShiftHourType" #ShiftHourType
+                          (change)="visiableMaxhourstextfield(ShiftHourType.value)">
+                    <option value="1">Flat Hours</option>
+                    <option value="2">Continues Hours</option>
+                  </select>
+
+                  <label style="display:{{maxhorsvisiable}}">Shift Max Hours :</label>
+                  <input style="display:{{maxhorsvisiable}}" type="number" class="form-control border-primary"
+                         name="ShiftMaxHours" #ShiftMaxHours>
+
+                  <br>
+
+                  <button class="btn btn-primary"
+                          (click)="addnewShift(selectsitebar.value,Shift_Name.value,ShiftHourType.value,ShiftMaxHours.value)">
+                    Add-New-Shift
+                  </button>
+
+
+                </div>
+                <div class="col-sm-7">
+
+                  <div class="form-group">
+                    <form method="post" action="">
+
+                      <label>Search</label>
+
+                      <input type="text" class="form-control border-info" name="searchSite" #searchSite
+                             placeholder="#Serach Site Name #Search Shift Name"
+                             autocomplete="off" (keyup)="serachShift(searchSite.value)">
+
+                    </form>
+
+                  </div>
+
+                  <div class="form-group table-responsive">
+                    <table class="table table-bordered">
+                      <thead>
+                      <tr>
+                        <th>Shift No</th>
+                        <th>Shift Name</th>
+                        <th>Site No</th>
+                        <th>Site Name</th>
+                        <th>Shift Type</th>
+                        <th>Shift Max Hours</th>
+                        <th>States</th>
+                        <th>Update</th>
+                      </tr>
+                      </thead>
+
+                      <tbody>
+                      <tr *ngFor="let allsh of allshifts | paginate: {itemsPerPage:15, currentPage: shiftpage } ">
+
+                        <td>{{allsh.ShId}}</td>
+                        <td>{{allsh.ShName}}</td>
+                        <td>{{allsh.SitId}}</td>
+                        <td>{{allsh.SitName}}</td>
+                        <td>{{allsh.Tp}}</td>
+                        <td>{{allsh.Hours == 0 ? 'Continues Hours' : allsh.Hours}}</td>
+                        <td>{{allsh.States == 1 ? 'True' : 'False'}}</td>
+                        <td>
+                          <button class="btn btn-success" data-toggle="modal" data-target="#updateShift"
+                                  (click)="getSelectedShiftId(allsh.ShId)">Update
+                          </button>
+                        </td>
+
+                      </tr>
+                      </tbody>
+                    </table>
+                    <pagination-controls (pageChange)="shiftpage=$event"></pagination-controls>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div id="menu2" class="tab-pane fade">
+
+              <div class="row">
+
+                <div class="col-sm-12">
+
+                  <div class="form-group">
+                    <form method="post" action="">
+
+                      <label>Search : <span><a
+                        a data-toggle="popover"
+                        title="INFORMATION"
+                        data-content="Search By Site No , Site Name , Site Address , Shift Name , Worker No , Worker Name , Site States , Shift States"
+                      >
+                        <svg style="vertical-align: middle" width="1em" height="1em" viewBox="0 0 16 16"
+                             class="bi bi-info-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                              d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                        <path
+                          d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z"/>
+                        <circle cx="8" cy="4.5" r="1"/>
+                        </svg>
+                      </a></span></label><br>
+
+                      <input type="text" class="form-control border-info" id="sBarBank" name="sBar"
+                             placeholder="#Site No #Site Name #Site Address #Shift Name #Worker No #Worker Name #Site States #Shift States">
+                      <label>Last Activities</label>
+                      <div class="row">
+                        <div class="col-sm-5"><input type="date" class="form-control border-info" name="ds" id="ds"
+                                                     autocomplete="off"></div>
+                        <label>To</label>
+                        <div class="col-sm-5"><input type="date" class="form-control border-info" name="ds2" id="ds2"
+                                                     autocomplete="off"></div>
+                        <button class="btn btn-pinterest">Search</button>
+                      </div>
+
+
+                    </form>
+                  </div>
+
+                  <div class="form-group">
+                    <table class="table table-bordered">
+                      <thead>
+                      <tr>
+                        <th>Site No</th>
+                        <th>Site Name</th>
+                        <th>Site Address</th>
+                        <th>Shift No</th>
+                        <th>Shift Name</th>
+                        <th>Worker No</th>
+                        <th>Worker Name</th>
+                        <th>Last Active</th>
+                        <th>Site States</th>
+                        <th>View</th>
+                      </tr>
+                      </thead>
+
+                      <tbody>
+                      <tr>
+
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
+                      </tr>
+                      </tbody>
+                    </table>
+                    <pagination-controls (pageChange)="shiftpage=$event"></pagination-controls>
+                  </div>
+
+                </div>
+
+
+              </div>
+
+
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <footer class="footer"> © 2020 Developed by Zega.com</footer>
+  </div>
+
+</div>
+</body>
+</html>

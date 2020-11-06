@@ -1,0 +1,164 @@
+<!doctype html>
+<html>
+<html lang="en">
+
+<app-head-imports></app-head-imports>
+
+<body class="fix-header fix-sidebar card-no-border">
+
+
+<div id="main-wrapper">
+  <header class="topbar">
+    <app-nav-bar>
+      <router-outlet></router-outlet>
+    </app-nav-bar>
+  </header>
+  <aside class="left-sidebar">
+    <app-side-bar></app-side-bar>
+  </aside>
+  <div class="page-wrapper">
+    <div class="container-fluid">
+
+      <div class="row">
+
+        <div class="col-sm-12">
+
+          <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#home">Time-Sheets</a></li>
+            <li><a data-toggle="tab" href="#menu1">Approved-Time-Sheets</a></li>
+            <li><a data-toggle="tab" href="#menu2">All-Sites & Shifts</a></li>
+          </ul>
+
+          <div class="tab-content">
+
+
+            <div id="home" class="tab-pane fade in active">
+
+              <div class="row">
+
+                <div class="col-sm-12">
+
+                  <div class="form-group">
+
+
+                    <form method="post" action="">
+
+                      <label>Search :</label><br>
+
+
+                      <input type="radio" id="sheetNo" name="gender" value="sheetNo" #radioserch>
+                      <label for="sheetNo">Sheet No</label>
+
+                      <input type="radio" id="workNo" name="gender" value="workNo" #radioserch>
+                      <label for="workNo">Worker No</label>
+
+                      <input type="radio" id="workName" name="gender" value="workName" #radioserch>
+                      <label for="workName">Worker Name</label>
+
+
+                      <br>
+                      <input type="text" class="form-control border-info" id="sBarBank" name="sBar">
+                    </form>
+
+
+                    <div class="row">
+                      <div class="col-sm-4 ">
+                        <form class="form-group">
+                          <label>Worker</label>
+                          <br>
+                          <select class="form-control border-info" id="ws" name="ws">
+
+                          </select>
+                        </form>
+                      </div>
+
+                      <div class="col-sm-4 ">
+                        <form class="form-group">
+                          <label>Pay-Period</label>
+                          <br>
+                          <select class="form-control border-info" id="pp" name="pp">
+
+                          </select>
+                        </form>
+                      </div>
+
+                      <div class="col-sm-4 ">
+                        <form class="form-group">
+                          <label>States</label>
+                          <br>
+                          <select class="form-control border-info" id="sta" name="sta">
+                            <option id="sta_act" name="sta_act">Active</option>
+                            <option id="sta_inact" name="sta_inact">In-Active</option>
+                          </select>
+                        </form>
+                      </div>
+                    </div>
+
+
+                    <form method="post" action="">
+                      <label>Last Activities</label>
+                      <div class="row">
+                        <div class="col-sm-5"><input type="date" class="form-control border-info" name="ds" id="ds"
+                                                     autocomplete="off"></div>
+                        <label>To</label>
+                        <div class="col-sm-5"><input type="date" class="form-control border-info" name="ds2" id="ds2"
+                                                     autocomplete="off"></div>
+                        <button class="btn btn-pinterest">Search</button>
+                      </div>
+
+
+                    </form>
+                  </div>
+
+                  <div class="form-group">
+                    <table class="table table-bordered">
+                      <thead>
+                      <tr>
+                        <th>Sheet No</th>
+                        <th>Worker No</th>
+                        <th>Worker Name</th>
+                        <th>Pay Period No</th>
+                        <th>Pay Period Name</th>
+                        <th>Tot W-D Hours</th>
+                        <th>Tot P-H Hours</th>
+                        <th>Tot SAT Hours</th>
+                        <th>Tot SUN Hours</th>
+                        <th>Submit Date</th>
+                        <th>States</th>
+                        <th>View</th>
+                      </tr>
+                      </thead>
+
+                      <tbody>
+                      <tr>
+
+                      </tr>
+                      </tbody>
+                    </table>
+
+                  </div>
+
+                </div>
+
+
+              </div>
+
+            </div>
+
+
+            <div id="menu1" class="tab-pane fade in active">
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <footer class="footer"> © 2020 Developed by Zega.com</footer>
+  </div>
+</div>
+
+
+</body>
+</html>

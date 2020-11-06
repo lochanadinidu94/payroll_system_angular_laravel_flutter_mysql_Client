@@ -1,0 +1,792 @@
+<!doctype html>
+<html>
+<html lang="en">
+
+<app-head-imports></app-head-imports>
+
+
+<body class="fix-header fix-sidebar card-no-border">
+
+
+<div id="main-wrapper">
+  <header class="topbar">
+    <app-nav-bar>
+      <router-outlet></router-outlet>
+    </app-nav-bar>
+  </header>
+  <aside class="left-sidebar">
+    <app-side-bar></app-side-bar>
+  </aside>
+  <div class="page-wrapper">
+    <div class="container-fluid">
+
+
+      <!--      //pagebody-->
+
+      <div class="row">
+        <div class="col-sm-12">
+
+          <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#home">Add-New</a></li>
+            <li><a data-toggle="tab" href="#menu1">Assign-Shifts</a></li>
+            <li><a data-toggle="tab" href="#menu3">Add-Attendances-Manually</a></li>
+            <li><a data-toggle="tab" href="#menu2">Attendances</a></li>
+          </ul>
+
+          <div class="tab-content">
+
+            <div id="home" class="tab-pane fade in active">
+
+              <div class="col-sm-12">
+
+
+                <div class="col-sm-5">
+
+                  <label>Search :</label>
+                  <input type="text" class="form-control" name="SNo" placeholder="#Mobile Number #Email"
+                         autocomplete="off" #searchbar>
+                  <br>
+                  <button class="btn btn-success" (click)="searchexsistingemployee(searchbar.value)">Search</button>
+                  <hr class="solid">
+
+
+                  <form method="post" (ngSubmit)="addNewEmployee(search.value)">
+
+                    <div class="col-sm-6" style="padding-left: unset">
+                      <label>Employee No :</label>
+                      <input type="text" class="form-control" placeholder="AUTO FILLED" name="empNo" id="empNo"
+                             autocomplete="off" disabled [(ngModel)]="NewEmployee.eid">
+
+                      <label>Employee Name :</label>
+                      <input type="text" class="form-control border-primary" name="empName" id="empName"
+                             autocomplete="off" [(ngModel)]="NewEmployee.ename">
+
+                      <label>Date of Birth :</label>
+                      <input type="date" class="form-control border-primary" name="dob" id="dob" autocomplete="off"
+                             [(ngModel)]="NewEmployee.dob">
+
+                      <label>Gender :</label><br>
+                      <select class="form-control border-primary" name="gender" [(ngModel)]="NewEmployee.gender">
+                        <option value="1">Male</option>
+                        <option value="0">Female</option>
+                      </select>
+
+                      <label>Mobile :</label>
+                      <input type="text" class="form-control border-primary" name="mobile" id="mobile"
+                             autocomplete="off" [(ngModel)]="NewEmployee.mobile">
+
+                      <label>Email :</label>
+                      <input type="text" class="form-control border-primary" name="email" id="email"
+                             autocomplete="off" [(ngModel)]="NewEmployee.email">
+
+                      <label>Address :</label>
+                      <input type="text" class="form-control border-primary" name="address" id="address"
+
+                             (keydown.enter)="$event.preventDefault()" placeholder="Search Nearest Location"
+                             autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search [(ngModel)]="NewEmployee.address">
+
+
+                      <label>Payment By :</label>
+                      <select class="form-control border-primary" name="paymentby" #paymentby
+                              (change)="paymentBy(paymentby.value)" [(ngModel)]="NewEmployee.paymentby">
+                        <option value="ABN">ABN</option>
+                        <option value="TFN">TFN</option>
+                        <option value="Cash in Hand">Cash in Hand</option>
+                      </select>
+
+                      <label style="display:{{paybycash}}">{{payby}} :</label>
+                      <input style="display:{{paybycash}}" type="text" class="form-control border-primary" name="abn"
+                             id="abn" autocomplete="off" [(ngModel)]="NewEmployee.abn">
+
+                      <label style="display:{{paybytfn}}">TAX Purposes :</label>
+                      <select style="display:{{paybytfn}}" class="form-control border-primary" name="taxpurposes"
+                              [(ngModel)]="NewEmployee.taxpur">
+                        <option value="AuResidant">An Australian resident for tax purposes</option>
+                        <option value="NonAuResidant">A foreign resident for tax purposes</option>
+                        <option value="WorkHoliday">A working holiday maker</option>
+                      </select>
+
+                      <label style="display:{{paybytfn}}">TAX-Free threshold :</label>
+                      <select style="display:{{paybytfn}}" class="form-control border-primary" name="taxfree"
+                              [(ngModel)]="NewEmployee.taxfree">
+                        <option value="TaxFreeThreshold">Yes</option>
+                        <option value="NonTaxFreeThreshold">No</option>
+                      </select>
+
+
+                    </div>
+
+                    <div class="col-sm-6" style="padding-right: unset">
+
+                      <label>Payment Circle :</label>
+                      <select class="form-control border-primary" name="pcircle"
+                              [(ngModel)]="NewEmployee.paymentcircle">
+                        <option value="Weekly">Weekly</option>
+                        <option value="Forthnight">Forthnight</option>
+                        <option value="Monthly">Monthly</option>
+                        <option value="Quarterly">Quarterly</option>
+                      </select>
+
+                      <div class="row">
+                        <div class="col-sm-6">
+
+                          <label>Weekdays Rate:</label>
+                          <input type="number" class="form-control border-primary" name="pweek" id="pweek"
+                                 autocomplete="off" [(ngModel)]="NewEmployee.weekdayrate">
+
+                          <label>Holidays Rate:</label>
+                          <input type="number" class="form-control border-primary" name="pholli" id="pholli"
+                                 autocomplete="off" [(ngModel)]="NewEmployee.holidayrate">
+
+                        </div>
+                        <div class="col-sm-6">
+
+                          <label>Saturday Rate:</label>
+                          <input type="number" class="form-control border-primary" name="psatu" id="psatu"
+                                 autocomplete="off" [(ngModel)]="NewEmployee.saturadayrate">
+
+                          <label>Sunday Rate:</label>
+                          <input type="number" class="form-control border-primary" name="psun" id="psun"
+                                 autocomplete="off" [(ngModel)]="NewEmployee.sundayrate">
+
+                        </div>
+                      </div>
+
+                      <label>Bank :</label>
+                      <select type="text" class="form-control" name="bnkName" [(ngModel)]="NewEmployee.bankid">
+                        <option *ngFor="let bank of banklist" [value]="bank.Id">{{bank.Name}}</option>
+                      </select>
+
+
+                      <label>Bank Account Name :</label>
+                      <input type="text" class="form-control border-primary" name="bAName" id="baName"
+                             [(ngModel)]="NewEmployee.accountname">
+
+                      <label>BSB :</label>
+                      <input type="number" class="form-control border-primary" name="bsb" id="bsb"
+                             [(ngModel)]="NewEmployee.bsb">
+
+                      <label>Account No :</label>
+                      <input type="number" class="form-control border-primary" name="accNo" id="accNo"
+                             [(ngModel)]="NewEmployee.accountno">
+
+                      <label>Active States :</label>
+                      <select type="text" class="form-control border-primary" name="actStates"
+                              [(ngModel)]="NewEmployee.status">
+                        <option value="1">Active</option>
+                        <option value="0">In-Active</option>
+                      </select>
+
+                      <!--                      <hr class="solid">-->
+                      <br>
+                      <br>
+                      <button type="submit" class="btn  btn-primary">Add-to-System</button>
+
+
+                    </div>
+                  </form>
+                </div>
+
+
+                <div class="col-sm-7">
+
+
+                  <div class="form-group">
+                    <form method="post" action="">
+                      Search :<input type="text" class="form-control border-info" id="sBarBank" name="sBar"
+                                     placeholder="Search by #Name or #Email or #Mobile">
+                    </form>
+                  </div>
+
+                  <div class="form-group table-responsive">
+                    <table class="table table-bordered">
+                      <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>DOB</th>
+                        <th>Gender</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Address</th>
+                        <th>States</th>
+                        <th>View</th>
+                      </tr>
+                      </thead>
+
+                      <tbody>
+                      <tr>
+
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+
+                </div>
+              </div>
+
+            </div>
+
+
+            <div id="menu1" class="tab-pane fade">
+
+
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="col-sm-5">
+
+
+                    <div class="form-group">
+                      <form method="post" action="">
+
+                        <label>Select Site:</label>
+
+                        <input type="radio" id="selectSiteRadio" name="selectsitebar_radio" value="selectSiteRadio">
+                        <label for="selectSiteRadio">Site No</label>
+
+                        <input type="radio" id="selectSiteNameRadio" name="selectsitebar_radio"
+                               value="selectSiteNameRadio">
+                        <label for="selectSiteNameRadio">Site Name</label>
+
+                        <input type="text" class="form-control border-info" name="searchSite" id="selectsitebar"
+                               autocomplete="off">
+
+                      </form>
+                    </div>
+
+
+                    <form method="post" action="">
+
+
+                      <div class="row">
+
+                        <div class="col-sm-6">
+
+                          <label>Site No :</label>
+                          <input type="text" class="form-control border-primary" name="SiteNo" id="SiteNo" disabled>
+
+                        </div>
+
+                        <div class="col-sm-6">
+
+                          <label>Site Name :</label>
+                          <input type="text" class="form-control border-primary" name="SiteName" id="SiteName"
+                                 disabled>
+
+                        </div>
+
+
+                      </div>
+
+
+                      <div class="row">
+
+
+                        <div class="col-sm-6">
+
+                          <label>Shift No :</label>
+                          <select class="form-control border-primary" name="ShiftHourType" id="ShiftNo">
+                          </select>
+
+                        </div>
+
+                        <div class="col-sm-6">
+
+                          <label>Shift Name :</label>
+                          <input type="text" class="form-control border-primary" name="Shift_Name" id="Shift_Name"
+                                 disabled>
+
+                        </div>
+
+                      </div>
+
+
+                      <div class="row">
+
+
+                        <div class="col-sm-6">
+
+                          <label>Shift Hours Type :</label>
+                          <input type="text" class="form-control border-primary" name="Shift_Name" id="Shift_Hours"
+                                 disabled>
+
+                        </div>
+
+                        <div class="col-sm-6">
+
+                          <label>Shift Max Hours :</label>
+                          <input type="number" class="form-control border-primary" name="ShiftMaxHours"
+                                 id="ShiftMaxHours" disabled>
+
+                        </div>
+
+                      </div>
+
+
+                      <br>
+
+                      <hr class="dotted">
+                    </form>
+
+                    <form method="post" action="">
+
+                      <label>Select Worker:</label>
+
+                      <input type="radio" id="selectCustRadio" name="selectcustebar_radio" value="selectCustRadio">
+                      <label for="selectCustRadio">Workers No</label>
+
+                      <input type="radio" id="selectcustNameRadio" name="selectcustebar_radio"
+                             value="selectcustNameRadio">
+                      <label for="selectcustNameRadio">Workers Name</label>
+
+                      <input type="text" class="form-control border-info" name="searchSite" id="selectcustbar"
+                             autocomplete="off">
+
+                    </form>
+                    <form method="post" action="">
+
+                      <div class="row">
+
+
+                        <div class="col-sm-6">
+
+                          <label>Worker No :</label>
+                          <input type="text" class="form-control border-primary" name="workersNo" id="workersNo"
+                                 disabled>
+
+                        </div>
+
+                        <div class="col-sm-6">
+
+                          <label>Worker Name :</label>
+                          <input type="text" class="form-control border-primary" name="workerName" id="workerName"
+                                 disabled>
+
+                        </div>
+
+
+                      </div>
+                      <div class="row">
+
+
+                        <div class="col-sm-6">
+
+                          <label>Gender :</label>
+                          <input type="text" class="form-control border-primary" name="workersNo" id="workersGender"
+                                 disabled>
+
+                        </div>
+
+                        <div class="col-sm-6">
+
+                          <label>All-Active-Sites :</label>
+                          <input type="text" class="form-control border-primary" name="workerActiveSitesName"
+                                 id="workerActiveSitesName"
+                                 disabled>
+
+                        </div>
+
+
+                      </div>
+
+                      <br>
+
+                      <button class="btn btn-primary">Add-New-Shift-to-Workers</button>
+
+                    </form>
+
+                  </div>
+
+                  <div class="col-sm-7">
+
+                    <form method="post" action="" class="form-group">
+
+                      <div class="row">
+
+                        <div class="col-sm-6">
+                          <label>Site Name :</label>
+                          <select class="form-control border-primary" name="ShiftHourType"
+                                  id="SiteNameSearchDropdown">
+                          </select>
+                        </div>
+
+                        <div class="col-sm-6">
+                          <label>Shift Name :</label>
+                          <select class="form-control border-primary" name="ShiftHourType"
+                                  id="ShiftNameSearchDropdown">
+                          </select>
+                        </div>
+
+                      </div>
+
+                    </form>
+
+                    <div class="row">
+
+                      <div class="form-group">
+                        <table class="table table-bordered">
+                          <thead>
+                          <tr>
+                            <th>Site No</th>
+                            <th>Site Name</th>
+                            <th>Shift No</th>
+                            <th>Shift Name</th>
+                            <th>Worker No</th>
+                            <th>Workers Name</th>
+                            <th>Last Update</th>
+                            <th>States</th>
+                            <th>View & Edit</th>
+                          </tr>
+                          </thead>
+
+                          <tbody>
+                          <tr>
+
+                          </tr>
+                          </tbody>
+                        </table>
+
+                      </div>
+
+                    </div>
+
+
+                  </div>
+
+                </div>
+              </div>
+
+
+            </div>
+
+            <div id="menu3" class="tab-pane fade ">
+
+              <div class="col-sm-6">
+
+                <div class="form-group">
+                  <form method="post" action="">
+
+                    <label>Select Site:</label>
+
+                    <input type="radio" id="selectSiteRadio_S" name="selectsitebar_radio" value="selectSiteRadio">
+                    <label for="selectSiteRadio_S">Site No</label>
+
+                    <input type="radio" id="selectSiteNameRadio_S" name="selectsitebar_radio"
+                           value="selectSiteNameRadio">
+                    <label for="selectSiteNameRadio_S">Site Name</label>
+
+                    <input type="text" class="form-control border-info" name="searchSite_S" id="selectsitebar_S"
+                           autocomplete="off">
+
+                  </form>
+                </div>
+
+                <form method="post" action="">
+
+                  <div class="row">
+
+
+                    <div class="col-sm-6">
+
+                      <label>Site No :</label>
+                      <input type="text" class="form-control border-primary" name="SiteNo_S" id="SiteNo_S" disabled>
+
+                    </div>
+
+                    <div class="col-sm-6">
+
+                      <label>Site Name :</label>
+                      <input type="text" class="form-control border-primary" name="SiteName_S" id="SiteName_S"
+                             disabled>
+
+                    </div>
+
+
+                  </div>
+
+
+                  <div class="row">
+
+
+                    <div class="col-sm-6">
+
+                      <label>Shift No :</label>
+                      <select class="form-control border-primary" name="ShiftHourType_S" id="ShiftHourType_S">
+                      </select>
+
+                    </div>
+
+                    <div class="col-sm-6">
+
+                      <label>Shift Name :</label>
+                      <input type="text" class="form-control border-primary" name="Shift_Name" id="Shift_Name_S"
+                             disabled>
+
+                    </div>
+
+                  </div>
+
+
+                  <div class="row">
+
+
+                    <div class="col-sm-6">
+
+                      <label>Shift Hours Type :</label>
+                      <input type="text" class="form-control border-primary" name="Shift_Name" id="Shift_Hours_S"
+                             disabled>
+
+                    </div>
+
+                    <div class="col-sm-6">
+
+                      <label>Shift Max Hours :</label>
+                      <input type="number" class="form-control border-primary" name="ShiftMaxHours"
+                             id="ShiftMaxHours_S" disabled>
+
+                    </div>
+
+                  </div>
+
+
+                  <br>
+
+                  <hr class="dotted">
+                </form>
+
+                <form method="post" action="">
+
+                  <label>Select Worker:</label>
+
+                  <input type="radio" id="selectCustRadio_S" name="selectcustebar_radio" value="selectCustRadio">
+                  <label for="selectCustRadio_S">Workers No</label>
+
+                  <input type="radio" id="selectcustNameRadio_S" name="selectcustebar_radio"
+                         value="selectcustNameRadio">
+                  <label for="selectcustNameRadio_S">Workers Name</label>
+
+                  <input type="text" class="form-control border-info" name="searchSite" id="selectcustbar_S"
+                         autocomplete="off">
+
+                </form>
+                <form method="post" action="">
+
+                  <div class="row">
+
+
+                    <div class="col-sm-6">
+
+                      <label>Worker No :</label>
+                      <input type="text" class="form-control border-primary" name="workersNo" id="workersNo_S"
+                             disabled>
+
+                    </div>
+
+                    <div class="col-sm-6">
+
+                      <label>Worker Name :</label>
+                      <input type="text" class="form-control border-primary" name="workerName" id="workerName_S"
+                             disabled>
+
+                    </div>
+
+
+                  </div>
+                  <div class="row">
+
+
+                    <div class="col-sm-6">
+
+                      <label>Gender :</label>
+                      <input type="text" class="form-control border-primary" name="workersNo" id="workersGender_S"
+                             disabled>
+
+                    </div>
+
+                    <div class="col-sm-6">
+
+                      <label>All-Active-Sites :</label>
+                      <input type="text" class="form-control border-primary" name="workerActiveSitesName"
+                             id="workerActiveSitesName_S"
+                             disabled>
+
+                    </div>
+
+
+                  </div>
+
+
+                  <br>
+
+                  <hr class="dotted">
+
+                </form>
+
+              </div>
+
+              <div class="col-sm-6">
+
+                <form action="" method="post">
+
+                  <div class="row">
+
+
+                    <div class="col-sm-6">
+
+                      <label>Date :</label>
+                      <input type="date" class="form-control border-primary" name="Manual_Att_date"
+                             id="Manual_Att_date">
+
+                    </div>
+
+                    <div class="col-sm-6">
+
+                      <label>Hours :</label>
+                      <input type="text" class="form-control border-primary" name="Manual_Att_hours"
+                             id="Manual_Att_hours" disabled>
+
+                    </div>
+
+
+                  </div>
+                  <div class="row">
+
+
+                    <div class="col-sm-6">
+
+                      <label>Start Time :</label>
+                      <input type="time" class="form-control border-primary" name="Manual_Att_time_1"
+                             id="Manual_Att_time_1">
+
+                    </div>
+
+                    <div class="col-sm-6">
+
+                      <label>End Time:</label>
+                      <input type="time" class="form-control border-primary" name="Manual_Att_time_2"
+                             id="Manual_Att_time_2">
+
+
+                    </div>
+
+
+                  </div>
+                  <label>Comment:</label>
+                  <textarea class="form-control border-primary" name="comment"
+                            id="comment"></textarea>
+
+                  <br>
+                  <button class="btn btn-primary">Add-Manual-Attendance</button>
+
+                </form>
+
+              </div>
+
+            </div>
+
+            <div id="menu2" class="tab-pane fade">
+
+              <div class="row">
+
+                <div class="col-sm-12">
+
+                  <div class="form-group">
+
+
+                    <form method="post" action="">
+                      <label>Search :</label><br>
+
+                      <input type="radio" id="sit_Name" name="AttendesSearch" value="sit_Name">
+                      <label for="sit_Name">Site Name</label>
+
+                      <input type="radio" id="shift_Names" name="AttendesSearch" value="shift_Names">
+                      <label for="shift_Names">Shift Name</label>
+
+                      <input type="radio" id="worker_Name" name="AttendesSearch" value="worker_Name">
+                      <label for="worker_Name">Worker Name</label>
+
+                      <input type="text" class="form-control border-info" id="sBarAttaendes" name="sBar">
+
+                    </form>
+
+                    <form method="post" action="">
+                      <label>Last Activities</label>
+
+                      <div class="row">
+
+                        <div class="col-sm-4">
+                          <input type="date" class="form-control border-info" name="ds" id="ds"
+                                 autocomplete="off">
+                        </div>
+                        <div class="col-sm-1">
+                          <label>To</label>
+                        </div>
+
+
+                        <div class="col-sm-4">
+                          <input type="date" class="form-control border-info" name="ds2" id="ds2"
+                                 autocomplete="off">
+                        </div>
+                        <div class="col-sm-3">
+                          <button class="btn btn-pinterest">Search</button>
+                        </div>
+
+
+                      </div>
+                    </form>
+
+
+                  </div>
+
+                  <div class="form-group">
+                    <table class="table table-bordered">
+                      <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Date</th>
+                        <th>Site</th>
+                        <th>Shift No</th>
+                        <th>Shift Name</th>
+                        <th>Shift Type</th>
+                        <th>Worker No</th>
+                        <th>Worker Name</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Work Hours</th>
+                        <th>View</th>
+                      </tr>
+                      </thead>
+
+                      <tbody>
+                      <tr>
+
+                      </tr>
+                      </tbody>
+                    </table>
+
+                  </div>
+
+                </div>
+
+
+              </div>
+
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+    <footer class="footer"> © 2020 Developed by Zega.com</footer>
+  </div>
+
+</div>
+
+
+</body>
+</html>

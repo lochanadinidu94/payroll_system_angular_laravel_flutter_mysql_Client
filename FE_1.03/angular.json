@@ -1,0 +1,162 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "hellow-world": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/hellow-world",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+
+              "src/assets/node_modules/bootstrap/css/bootstrap.min.css",
+              "src/assets/node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
+              "src/assets/node_modules/morrisjs/morris.css",
+              "src/assets/node_modules/c3-master/c3.min.css",
+
+              "src/styles.css",
+
+              "src/css/pages/dashboard1.css",
+              "src/css/colors/default.css",
+
+              "node_modules/@fullcalendar/core/main.css",
+              "node_modules/@fullcalendar/daygrid/main.css",
+
+              "src/app/components/login/login.css"
+
+            ],
+            "scripts": [
+
+              "node_modules/jquery/jquery.min.js",
+
+              "src/app/js_1/custom.min.js",
+              "src/app/js_1/sidebarmenu.js",
+              "src/app/js_1/dashboard1.js",
+              "src/app/js_1/waves.js",
+              "src/app/js_1/perfect-scrollbar.jquery.min.js",
+
+
+              "node_modules/bootstrap/js_1/popper.min.js",
+              "node_modules/bootstrap/js_1/bootstrap.min.js",
+
+              "node_modules/raphael/js_1/raphael-min.js",
+              "node_modules/morrisjs/js_1/morris.min.js",
+              "node_modules/d3/js_1/d3.min.js",
+              "node_modules/c3-master/js_1/c3.min.js",
+              "node_modules/zone.js/dist/js_1/zone-evergreen.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "hellow-world:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "hellow-world:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "hellow-world:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "tsconfig.app.json",
+              "tsconfig.spec.json",
+              "e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "hellow-world:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "hellow-world:serve:production"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "hellow-world",
+  "cli": {
+    "analytics": false
+  }
+}

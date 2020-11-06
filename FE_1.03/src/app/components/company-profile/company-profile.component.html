@@ -1,0 +1,642 @@
+<!doctype html>
+<html>
+<html lang="en">
+
+<app-head-imports></app-head-imports>
+
+<body class="fix-header fix-sidebar card-no-border">
+
+<div id="main-wrapper">
+  <header class="topbar">
+    <app-nav-bar>
+      <router-outlet></router-outlet>
+    </app-nav-bar>
+  </header>
+  <aside class="left-sidebar">
+    <app-side-bar></app-side-bar>
+  </aside>
+  <div class="page-wrapper">
+    <div class="container-fluid">
+
+
+      <!--      //pagebody-->
+
+      <div class="row">
+
+        <div class="col-sm-12">
+
+
+          <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#home">Profile</a></li>
+            <li><a data-toggle="tab" href="#menu1">System-Users</a></li>
+            <li><a data-toggle="tab" href="#menu2">Bank Details</a></li>
+            <li><a data-toggle="tab" href="#menu3">Events</a></li>
+          </ul>
+
+          <div class="tab-content">
+
+            <div id="home" class="tab-pane fade in active">
+
+
+              <div class="row">
+                <div class="col-sm-12">
+
+
+                  <form method="post" action="">
+
+                    <div class="col-sm-6">
+
+                      <label>Company No :</label>
+                      <input type="text" class="form-control" name="comNo" [(ngModel)]="companyDetals.companyNo"
+                             autocomplete="off" disabled [value]="ClientNo">
+
+                      <label>Employer Name :</label>
+                      <input type="text" class="form-control" name="comName" [(ngModel)]="companyDetals.companyNames"
+                             autocomplete="off" disabled [value]="ClientName">
+
+                      <label>Email :</label>
+                      <input type="text" class="form-control" name="email" [(ngModel)]="companyDetals.companyEmail"
+                             disabled [value]="Email">
+
+                      <label>Mobile :</label>
+                      <input type="text" class="form-control" name="mobile" [(ngModel)]="companyDetals.companyMobile"
+                             disabled [value]="Mobile">
+
+                      <div class="col-sm-12">
+                        <div class="col-sm-6">
+                          <label>Country :</label>
+                          <input type="text" class="form-control" name="country" [value]="Country"
+                                 [(ngModel)]="companyDetals.companyLastUpdateDate" disabled>
+                        </div>
+                        <div class="col-sm-6">
+                          <label>State :</label>
+                          <input type="text" class="form-control" name="cDate" [value]="States"
+                                 [(ngModel)]="companyDetals.companyCreateDate" disabled>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-12">
+                        <div class="col-sm-6">
+                          <label>Last Update Date :</label>
+                          <input type="text" class="form-control" name="state" [value]="UpdatecDate"
+                                 [(ngModel)]="companyDetals.companyLastUpdateDate" disabled>
+                        </div>
+                        <div class="col-sm-6">
+                          <label>Create Date :</label>
+                          <input type="text" class="form-control" name="cDate" [value]="CreatedDate"
+                                 [(ngModel)]="companyDetals.companyCreateDate" disabled>
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+
+                        <div class="col-sm-6">
+                          <label>Active Status :</label>
+                          <input type="text" class="form-control" name="aStatus" [value]="ActiveStatus"
+                                 [(ngModel)]="companyDetals.companyStatus" disabled>
+                        </div>
+
+                        <div class="col-sm-6">
+                          <label>License Expired :</label>
+                          <input type="text" class="form-control" name="expdate" [value]="ExpDate"
+                                 [(ngModel)]="companyDetals.companyExpDate" disabled>
+                        </div>
+
+                      </div>
+
+
+                    </div>
+
+                    <div class="col-sm-6">
+
+                      <label>ABN :</label>
+                      <input type="text" class="form-control border-success" name="abn" [value]="ABN"
+                             [(ngModel)]="companyDetals.companyABN" disabled>
+
+                      <label>Marketing Officer :</label>
+                      <input type="text" class="form-control border-success" name="acn" [value]="MarketingOfficer"
+                             [(ngModel)]="companyDetals.companyACN" disabled>
+
+                      <label>TFN :</label>
+                      <input type="text" class="form-control border-success" name="tfn" [value]="TFN" #tfn
+                             [(ngModel)]="companyDetals.companyTFN">
+
+                      <label>Workcover No :</label>
+                      <input type="text" class="form-control border-success" name="workcoverno" [value]="WCNo" #wco
+                             [(ngModel)]="companyDetals.companyWorkCoverNo">
+
+                      <label>Public Libility No :</label>
+                      <input type="text" class="form-control border-success" name="plNo" [value]="PLNo" #plco
+                             [(ngModel)]="companyDetals.companyPublicLibilityNo">
+
+                      <label>Laboure Cover No :</label>
+                      <input type="text" class="form-control border-success" name="lcNo" [value]="LCNo" #lco
+                             [(ngModel)]="companyDetals.companyLaboureCoverNo">
+
+                      <label>Web :</label>
+                      <input type="text" class="form-control border-success" name="web" [value]="Web" #web
+                             [(ngModel)]="companyDetals.companyWeb">
+
+                      <hr class="solid">
+                      <button type="submit" class="btn  btn-success"
+                              (click)="updateCurrentCompany(tfn.value,wco.value,plco.value,lco.value,web.value)">Update
+                      </button>
+
+
+                    </div>
+
+
+                  </form>
+
+                </div>
+              </div>
+
+
+            </div>
+
+            <div id="menu1" class="tab-pane fade">
+
+
+              <div class="row">
+
+                <div class="col-sm-12">
+
+                  <div class="col-sm-3">
+
+                    <form method="post"
+                          (ngSubmit)="saveNewSystemUser(suName.value,suMobile.value,suEmail.value,suCompany.checked,suWorkers.checked,suSites.checked,suPayments.checked)">
+
+                      <h4 style="color: #3F51B5">Add New System-User</h4>
+
+                      <label>Name :</label>
+                      <input type="text" class="form-control border-primary" name="userName" #suName
+                             [(ngModel)]="NewSystemUser.Name">
+
+                      <label>Mobile :</label>
+                      <input type="number" class="form-control border-primary" name="userMobile" #suMobile
+                             [(ngModel)]="NewSystemUser.Mobile">
+
+                      <label>Email :</label>
+                      <input type="email" class="form-control border-primary" name="userEmail" #suEmail
+                             [(ngModel)]="NewSystemUser.Email">
+
+                      <label>Roll Type :</label>
+                      <select class="form-control" name="UserRoll" #usertype
+                              (change)="getSystemUserType(usertype.value)">
+                        <option value="2" selected>Admin</option>
+                        <option value="1">Guest</option>
+                      </select>
+
+                      <br>
+
+                      <div [hidden]="UserPriviladge">
+
+                        <input type="checkbox" id="Company" name="Company" #suCompany>
+                        <label for="Company">Company </label>
+
+                        <input type="checkbox" id="Workers" name="Workers" #suWorkers>
+                        <label for="Workers">Workers </label>
+
+                        <input type="checkbox" id="Time-Sheet" name="Time-Sheet" #suSites>
+                        <label for="Time-Sheet">Sites & Time-Sheet</label>
+
+                        <input type="checkbox" id="Payments" name="Payments" #suPayments>
+                        <label for="Payments">Payment </label>
+
+                      </div>
+
+                      <hr class="solid">
+                      <button type="submit" class="btn  btn-primary">Add New</button>
+
+                    </form>
+
+                  </div>
+                  <div class="col-sm-9">
+
+
+                    <div class="row">
+
+                      <div class="form-group">
+                        <label>Search :</label>
+                        <input type="text" class="form-control border-info" id="sBar" name="sBar"
+                               style="width: 400px" #searchtxtsysusr
+                               (keyup)="loardSystmeUsersbyName(searchtxtsysusr.value)">
+
+                      </div>
+                    </div>
+
+
+                    <div class="row">
+
+                      <div class="form-group table-responsive">
+                        <table class="table table-bordered">
+                          <thead>
+                          <tr>
+                            <th>Id</th>
+                            <th>Roll</th>
+                            <th>Name</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>Company</th>
+                            <th>Workers</th>
+                            <th>Site & .</th>
+                            <th>Payment</th>
+                            <th>States</th>
+                            <th>Update</th>
+                          </tr>
+                          </thead>
+
+                          <tbody>
+                          <tr
+                            *ngFor="let comp of systemdataall |paginate: {itemsPerPage:10, currentPage: systemusercurrentpage}">
+
+
+                            <td>{{comp.Id}}</td>
+                            <td>{{comp.Roll}}</td>
+                            <td>{{comp.Name}}</td>
+                            <td>{{comp.Mobile}}</td>
+                            <td>{{comp.Email}}</td>
+                            <td>
+                              {{comp.Company == 1 ? 'True' : 'False'}}
+
+                            </td>
+                            <td>
+                              {{comp.Workers == 1 ? 'True' : 'False'}}
+
+                            </td>
+                            <td>
+                              {{comp.Sites == 1 ? 'True' : 'False'}}
+
+                            </td>
+                            <td>
+                              {{comp.Payments == 1 ? 'True' : 'False'}}
+
+                            </td>
+                            <td>
+                              {{comp.Status}}
+
+                            </td>
+                            <td>
+                              <button class="btn btn-primary" data-toggle="modal" data-target="#updateCompany"
+                                      (click)="viewSystemUsers(comp.Id,comp.Name,comp.Mobile,comp.Email)">
+                                View
+                              </button>
+                            </td>
+
+
+                          </tr>
+                          </tbody>
+                        </table>
+                        <pagination-controls (pageChange)="systemusercurrentpage=$event"></pagination-controls>
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+            </div>
+
+
+            <div class="modal fade" id="updateCompany" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle2">Update System Users</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+
+                  <div class="modal-body">
+
+
+                    <div class="col-sm-12">
+
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="form-group">
+                            <label>ID:</label>
+                            <input type="text" class="form-control" #SysUseId value="{{systemusrid}}" disabled>
+
+                            <label>Name:</label>
+                            <input type="text" class="form-control" name="Name" value="{{systemusrname}}" disabled><br>
+
+                            <label>Mobile:</label>
+                            <input type="number" class="form-control" #SysUseMobile value="{{systemusrmobile}}"><br>
+
+                            <label>Email:</label>
+                            <input type="email" class="form-control" #SysUseEmail value="{{systemusremail}}"><br>
+
+                            <label>Company:</label>
+                            <select class="form-control" #SysUseCompany>
+                              <option value="1">True</option>
+                              <option value="0">False</option>
+                            </select>
+
+                            <label>Workers:</label>
+                            <select class="form-control" #SysUseWorker>
+                              <option value="1">True</option>
+                              <option value="0">False</option>
+                            </select>
+
+                            <label>Sites:</label>
+                            <select class="form-control" #SysUseSites>
+                              <option value="1">True</option>
+                              <option value="0">False</option>
+                            </select>
+
+                            <label>Payment:</label>
+                            <select class="form-control" #SysUsePayment>
+                              <option value="1">True</option>
+                              <option value="0">False</option>
+                            </select>
+
+                            <label>Status:</label>
+                            <select class="form-control" #SysUseStatus>
+                              <option value="1">Active</option>
+                              <option value="2">In-Active</option>
+                            </select>
+
+                            <br>
+
+                            <button class="btn btn-success" (click)="updateSystemUser(
+                            SysUseMobile.value,SysUseEmail.value,SysUseCompany.value,SysUseWorker.value,SysUseSites.value,SysUsePayment.value,SysUseStatus.value
+                            )">
+                              Update
+                            </button>
+                            <app-updatesuccessfullymsg *ngIf="successupdatedmsg"></app-updatesuccessfullymsg>
+                          </div>
+                        </div>
+                      </div>
+
+
+                    </div>
+
+
+                  </div>
+                  <div class="modal-footer">
+
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+
+            <div id="menu2" class="tab-pane fade">
+
+
+              <div class="row">
+
+                <div class="col-sm-12">
+
+                  <div class="col-sm-4">
+
+                    <form method="post" (submit)="SaveNewBankCard()">
+
+                      <label>Bank Name :</label>
+                      <select type="text" class="form-control" name="bnkName" [(ngModel)]="BanakCards.BankName">
+                        <option *ngFor="let bank of banklist" [value]="bank.Name">{{bank.Name}}</option>
+                      </select>
+
+                      <label>Card Name :</label>
+                      <input type="text" class="form-control border-primary" name="crdName"
+                             [(ngModel)]="BanakCards.CardName">
+
+                      <label>Card No :</label>
+                      <input type="number" class="form-control border-primary" name="crdNo"
+                             [(ngModel)]="BanakCards.CardNo">
+
+
+                      <label>Card Exp Date:</label>
+
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="col-sm-6">
+                            <span>Month</span>
+                            <select type="text" class="form-control border-primary" name="cardExpMnt"
+                                    [(ngModel)]="BanakCards.CardXDateM">
+                              <option *ngFor="let m of month" [value]="m.id">{{m.id}}</option>
+                            </select>
+                          </div>
+                          <div class="col-sm-6">
+                            <span>Year</span>
+                            <select type="text" class="form-control border-primary" name="cardExpyear"
+                                    [(ngModel)]="BanakCards.CardXDateY">
+                              <option *ngFor="let y of years" [value]="y.id">{{y.id}}</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      <label>CVV No :</label>
+                      <input type="password" class="form-control border-primary" name="cvv"
+                             [(ngModel)]="BanakCards.CvvNo">
+
+                      <hr class="solid">
+                      <button type="submit" class="btn  btn-primary">Add New</button>
+
+                    </form>
+
+                  </div>
+                  <div class="col-sm-8">
+
+
+                    <div class="row">
+
+                      <div class="form-group">
+                        <form method="post" action="">
+                          <label>Search :</label>
+                          <input type="text" class="form-control border-info" id="sBarBank" name="sBar"
+                                 style="width: 400px">
+                        </form>
+                      </div>
+                    </div>
+
+
+                    <div class="row">
+                      <div class="form-group table-responsive">
+                        <table class="table table-bordered">
+                          <thead>
+                          <tr>
+                            <th>Account Id</th>
+                            <th>Bank Name</th>
+                            <th>Card Name</th>
+                            <th>Card No</th>
+                            <th>Card Exp Date</th>
+                            <th>CVV No</th>
+                            <th>Remove</th>
+
+                          </tr>
+                          </thead>
+
+                          <tbody>
+                          <tr *ngFor="let cards of BankCardDetails ">
+                            <td>{{cards.Id}}</td>
+                            <td>{{cards.Bank}}</td>
+                            <td>{{cards.CardName}}</td>
+                            <td>{{cards.CardNumber}}</td>
+                            <td>{{cards.ExpDate}}</td>
+                            <td>
+                              <button (click)="HideCVV()" (dblclick)="ShowCVV()"><i class="fa fa-eye"
+                                                                                    aria-hidden="true"></i></button>
+                              <label *ngIf="CvvShow">{{cards.CVV}}</label>
+                            </td>
+                            <td>
+                              <button class="btn btn-danger" (click)="removeBankCard(cards.Id)">Remove</button>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </table>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+            </div>
+            <div id="menu3" class="tab-pane fade">
+
+              <div class="row">
+
+                <div class="col-sm-6">
+
+
+                  <form method="post" class="form-group" (submit)="AddNewPayPeriod()">
+
+                    <label>Start Date :</label>
+                    <input type="date" class="form-control border-info" name="ds" id="ds"
+                           autocomplete="off" #ds1 (change)="firstDateSelect(ds1.value)"
+                           [(ngModel)]="PayPeriod.StartDate">
+
+                    <label>End Date :</label>
+                    <input type="date" class="form-control border-info" name="ds1" id="ds1"
+                           autocomplete="off" #ds2 (change)="secondDateSelect(ds2.value)"
+                           [(ngModel)]="PayPeriod.EndDate">
+
+                    <label>Total Dates :</label>
+                    <input type="text" class="form-control border-primary" name="payPreTotDates" id="payPreTotDates"
+                           value="{{totdates}}" disabled [(ngModel)]="PayPeriod.TotDate">
+
+                    <label>Pay Period Name :</label>
+                    <input type="text" class="form-control border-info" name="ppname" id="ppname"
+                           autocomplete="off" value="{{payperiodname}}" disabled [(ngModel)]="PayPeriod.PayName">
+
+
+                    <label>Status :</label>
+                    <select class="form-control border-primary" name="payPreTotStstes" id="payPreTotStstes"
+                            [(ngModel)]="PayPeriod.Status">
+                      <option value="1">Active</option>
+                      <option value="0">In-Active</option>
+                    </select>
+
+                    <br>
+
+                    <button class="btn btn-primary">Add-New-Pay-Period</button>
+
+                  </form>
+
+                  <hr class="solid">
+
+                  <div class="form-group">
+                    <label>Search :</label>
+                    <input type="text" class="form-control border-info" name="parsearch" #parsearch
+                           (keyup)="loardPayPeriodsDetailsByName(parsearch.value)"
+                    >
+
+                  </div>
+
+                  <div class="form-group table-responsive">
+                    <table class="table table-bordered">
+                      <thead>
+                      <tr>
+                        <th>Pay Period No</th>
+                        <th>Name</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Total Dates</th>
+                        <th>Last Update</th>
+                        <th>Status</th>
+                        <th>Change</th>
+
+                      </tr>
+                      </thead>
+
+                      <tbody>
+                      <tr
+                        *ngFor="let payperiod of PayPeriodsDetails | paginate: {itemsPerPage:5, currentPage: PayPeriodTablePages }">
+                        <td>{{payperiod.Id}}</td>
+                        <td>{{payperiod.Name}}</td>
+                        <td>{{payperiod.SDate}}</td>
+                        <td>{{payperiod.EDate}}</td>
+                        <td>{{payperiod.TDate}}</td>
+                        <td>{{payperiod.UDate}}</td>
+                        <td>{{payperiod.Status == 1 ? 'True' : 'False'}}</td>
+                        <td>
+                          <button class="btn btn-success"
+                                  (click)="changepayperiodststus(payperiod.Id, payperiod.Status)">{{payperiod.Status == 1 ? 'De-Active' : 'Active'}}</button>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                    <pagination-controls (pageChange)="PayPeriodTablePages=$event"></pagination-controls>
+                  </div>
+
+                </div>
+
+                <div class="col-sm-6">
+
+
+                  <full-calendar
+                    defaultView="dayGridMonth"
+                    [plugins]="calendarPlugins"
+                    [weekends]="true"
+                    [events]="[
+                                {  title: 'event 1', date: '2020-06-14' },
+                                { start: firstdate, end: secondate, rendering: 'background'}
+                              ]"
+                    [selectable]="true"
+                  >
+                  </full-calendar>
+
+                </div>
+                <!--                {  title: 'event 1', date: '2020-06-14' },-->
+                <!--                { start: firstdate, end: secondate, rendering: 'background'}-->
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <footer class="footer"> © 2020 Powered by Aquiver Technology Pvt Ltd. Australia</footer>
+  </div>
+</div>
+
+
+</body>
+</html>

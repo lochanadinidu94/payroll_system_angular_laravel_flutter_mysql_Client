@@ -1,0 +1,518 @@
+<h1>Super Admin</h1>
+
+<div class="col-sm-6 " *ngIf="loginDiv">
+
+  <label>UserName :</label>
+  <input type="text" class="form-control" #un>
+
+  <label>Password :</label>
+  <input type="password" class="form-control" #pw>
+
+  <button class="btn btn-success" (click)="loginDashbprd(un.value, pw.value)">Login</button>
+
+</div>
+
+
+<div class="row" style="border: dotted" *ngIf="dashboardDiv">
+  <div class="col-sm-12">
+
+    <h3>Add Company</h3>
+
+
+    <form method="post" #addCustomer="ngForm" (ngSubmit)="addEmployer()" class="form-group">
+
+      <div class="col-sm-10">
+
+
+        <label>Company No :</label>
+        <input type="text" class="form-control" [(ngModel)]="companydata.companyNo" required ngModel=""
+               #companyNo="ngModel" name="companyNo" autocomplete="off" value="{{nextCompanyNo}}" disabled>
+
+        <label>Employer Name :</label>
+        <input type="text" class="form-control" name="companyName" autocomplete="off" required ngModel=""
+               #companyName="ngModel" [(ngModel)]="companydata.companyName">
+
+        <app-requiredmsg *ngIf="companyName.touched && !companyName.valid"></app-requiredmsg>
+
+        <label>Email :</label>
+        <input type="email" class="form-control" name="companyEmail" required ngModel="" #companyEmail="ngModel"
+               [(ngModel)]="companydata.companyEmail" autocomplete="off">
+
+        <app-requiredmsg *ngIf="companyEmail.touched && !companyEmail.valid"></app-requiredmsg>
+
+        <label>Mobile :</label>
+        <input type="tel" class="form-control" name="companyMobile" required ngModel="" #companyMobile="ngModel"
+               [(ngModel)]="companydata.companyMobile" autocomplete="off">
+
+        <app-requiredmsg *ngIf="companyMobile.touched && !companyMobile.valid"></app-requiredmsg>
+
+
+        <label>Country :</label>
+        <select class="form-control" name="companyCountry" required ngModel="" #companyCountry="ngModel"
+                [(ngModel)]="companydata.companyCountry" (change)="loardState(companyCountry)">
+
+          <option *ngFor="let country of countryList" id="{{country.id}}"
+                  value="{{country.id}}">{{country.name}}</option>
+
+        </select>
+        <app-requiredmsg *ngIf="companyCountry.touched && !companyCountry.valid"></app-requiredmsg>
+
+
+        <label>Country state :</label>
+        <select class="form-control" name="companyStates" required ngModel="" #companyStates="ngModel"
+                [(ngModel)]="companydata.companyStates">
+
+
+          <option *ngFor="let sta of state" id="{{sta.id}}" [value]='sta.id'>{{sta.name}}
+
+        </select>
+
+        <app-requiredmsg *ngIf="companyStates.touched && !companyStates.valid"></app-requiredmsg>
+
+        <div class="col-sm-12">
+
+          <div class="col-sm-6">
+            <label>Active Status :</label>
+            <select class="form-control" name="companyStatus" required ngModel="" #companyStatus="ngModel"
+                    [(ngModel)]="companydata.companyStatus">
+              <option id="Active">Active</option>
+              <option id="Inactive">InActive</option>
+            </select>
+            <app-requiredmsg *ngIf="companyStatus.touched && !companyStatus.valid"></app-requiredmsg>
+          </div>
+
+          <div class="col-sm-6">
+            <label>License Expired :</label>
+            <input type="date" class="form-control" name="companyExpDate" required ngModel="" #companyExpDate="ngModel"
+                   [(ngModel)]="companydata.companyExpDate">
+
+            <app-requiredmsg *ngIf="companyExpDate.touched && !companyExpDate.valid"></app-requiredmsg>
+          </div>
+
+        </div>
+
+
+        <label>Web :</label>
+        <input type="text" class="form-control border-success" name="companyWeb" [(ngModel)]="companydata.companyWeb">
+
+        <label>TFN :</label>
+        <input type="text" class="form-control border-success" name="companyTFN" [(ngModel)]="companydata.companyTFN">
+
+        <label>ABN or ACN:</label>
+        <input type="text" class="form-control border-success" name="companyABN" required ngModel=""
+               #companyAbn="ngModel" [(ngModel)]="companydata.companyABN" autocomplete="off">
+
+        <app-requiredmsg *ngIf="companyAbn.touched && !companyAbn.valid"></app-requiredmsg>
+
+        <!--        databse EmployerProfile table ACN collume update to Marketing Mananger but not change table name -->
+        <label>Marketing Officer :</label>
+        <input type="text" class="form-control border-success" name="companyACN" required ngModel=""
+               #companyAcn="ngModel" [(ngModel)]="companydata.companyACN">
+
+        <app-requiredmsg *ngIf="companyAcn.touched && !companyAcn.valid"></app-requiredmsg>
+
+        <label>Workcover No :</label>
+        <input type="text" class="form-control border-success" name="companyWorkCoverNo"
+               [(ngModel)]="companydata.companyWorkCoverNo">
+
+        <label>Public Libility No :</label>
+        <input type="text" class="form-control border-success" name="companyPublicLibilityNo"
+               [(ngModel)]="companydata.companyPublicLibilityNo">
+
+        <label>Laboure Cover No :</label>
+        <input type="text" class="form-control border-success" name="companyLaboureCoverNo"
+               [(ngModel)]="companydata.companyLaboureCoverNo">
+
+        <br>
+
+        <hr class="solid">
+
+        <label>Password :</label>
+        {{randomstring}}
+
+        <div class="form-group" hidden>
+
+          <input type="checkbox" id="Attendence" name="Attendence" value="selectSiteRadio"
+                 [(ngModel)]="companyPrivilage.attendance">
+          <label for="Attendence">Attendence </label>
+
+          <input type="checkbox" id="Time-Sheet" name="Time-Sheet" value="selectSiteNameRadio"
+                 [(ngModel)]="companyPrivilage.timeSheet">
+          <label for="Time-Sheet">Time-Sheet </label>
+
+          <input type="checkbox" id="Payments" name="Payments" value="selectSiteNameRadio"
+                 [(ngModel)]="companyPrivilage.payment">
+          <label for="Payments">Payment </label>
+
+
+        </div>
+
+        <hr class="solid">
+        <button type="submit" class="btn  btn-primary" [disabled]="!addCustomer.valid">Save</button>
+
+
+      </div>
+
+
+    </form>
+
+    <hr class="solid">
+  </div>
+
+
+  <div class="col-sm-12">
+
+    <h3>Update Company</h3>
+
+
+    <div class="row">
+
+      <div class="col-sm-2">
+
+        Company No
+        <select class="form-control" name="companyIdSearch" #companyNoo (change)="sortByCompanyId(companyNoo.value)">
+
+          <option *ngFor="let companyid of companyIds">{{companyid.id}}</option>
+
+        </select>
+
+      </div>
+
+      <div class="col-sm-2">
+        Company Name
+        <select class="form-control" name="companyNameSearch" #companyame
+                (change)="sortByCompanyName(companyame.value)">
+          <option *ngFor="let companyname of companyNames">{{companyname.name}}</option>
+          <input type="text" name="format" value=""/>
+        </select>
+
+      </div>
+
+
+      <div class="col-sm-2">
+
+        Country
+        <select class="form-control" name="companyCountrySearch" #countryname
+                (change)="sortByCountryNames(countryname.value)">
+
+          <option *ngFor="let countryname of countryNames">{{countryname.name}}</option>
+
+        </select>
+
+      </div>
+
+      <div class="col-sm-2">
+
+        Marketing Officer
+        <select class="form-control" name="companyMarketingSearch" #marketname
+                (change)="sortByMarketingNames(marketname.value)">
+
+          <option *ngFor="let mkt of marketingName">{{mkt.name}}</option>
+
+        </select>
+
+      </div>
+
+      <div class="col-sm-2">
+        Status
+        <select autocomplete="on" class="form-control" name="companyStatusSearch" #companyStatusSearch
+                (change)="sortWithCurrentStatus(companyStatusSearch.value)">
+          <option id="Act">Active</option>
+          <option id="Inact">InActive</option>
+        </select>
+
+      </div>
+
+      <div class="col-sm-4">
+
+        <label>Start Date :</label>
+        <input type="date" class="form-control border-primary" name="companyStatusSearchDate1" #dtSearch1>
+
+        <label>End Date:</label>
+        <input type="date" class="form-control border-primary" name="companyStatusSearchDate2" #dtSearch2>
+
+        <button class="btn btn-success" (click)="sortByExpDate(dtSearch1.value,dtSearch2.value)">Search</button>
+
+      </div>
+
+    </div>
+
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th>Company Id</th>
+        <th>Name</th>
+        <th>Mobile</th>
+        <th>Email</th>
+        <th>Country</th>
+        <th>States</th>
+        <th>ABN</th>
+        <th>Marketing Officer</th>
+        <th>EXP Date</th>
+        <th>Status</th>
+        <th>Users</th>
+        <th>Update</th>
+      </tr>
+      </thead>
+
+      <tbody>
+
+      <tr *ngFor="let comp of companydataall |paginate: {itemsPerPage:10, currentPage: companyCurrentPage}">
+
+
+        <td>{{comp.Id}}</td>
+        <td>{{comp.Name}}</td>
+        <td>{{comp.Mobile}}</td>
+        <td>{{comp.Email}}</td>
+        <td>{{comp.Country}}</td>
+        <td>{{comp.States}}</td>
+        <td>{{comp.ABN}}</td>
+        <td>{{comp.Market}}</td>
+        <td>{{comp.EXPDate}}</td>
+        <td>{{comp.Status}}</td>
+        <td>
+          <button class="btn btn-success" data-toggle="modal" data-target="#employeuser"
+                  (click)="loardEmployerUserDetails(comp.Id)">View
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-primary" data-toggle="modal" data-target="#updateCompany"
+                  (click)="loardUpdateCompany(comp.Id,comp.Name,comp.Mobile,comp.Email,comp.EXPDate,comp.Status)">Click
+          </button>
+        </td>
+
+
+      </tr>
+
+      </tbody>
+
+    </table>
+    <pagination-controls (pageChange)="companyCurrentPage=$event"></pagination-controls>
+
+    <div class="modal fade" id="employeuser" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+         aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle2">Users Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+
+            <div class="col-sm-12">
+              <table class="table table-bordered">
+                <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Name</th>
+                  <th>Mobile</th>
+                  <th>Email</th>
+                  <th>UserName</th>
+                  <th>Password</th>
+                  <th>Status</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr *ngFor="let empl of EmployerUserDataList">
+                  <td>{{empl.Id}}</td>
+                  <td>{{empl.Name}}</td>
+                  <td>{{empl.Mobile}}</td>
+                  <td>{{empl.Email}}</td>
+                  <td>{{empl.UserName}}</td>
+                  <td>{{empl.Password}}</td>
+                  <td>{{empl.Status}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="updateCompany" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+         aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Update Company Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+
+
+            <div class="col-sm-12">
+
+              <div class="row">
+                <div class="col-sm-4">
+                  <label>No:</label> <br>
+                  <label>Name:</label> <br>
+                  <label>Mobile:</label> <br>
+                  <label>Email:</label> <br>
+                  <label>ExpDate:</label> <br>
+                  <label>States:</label>
+                </div>
+                <div class="col-sm-8">
+                  <input type="text" #CompanyNo value="{{updateCId}}" disabled> <br>
+                  <input type="text" name="Name" value="{{updateCName}}" disabled> <br>
+                  <input type="text" #Mobile value="{{updateCMobile}}"> <br>
+                  <input type="text" #Email value="{{updateCEmail}}"> <br>
+                  <input type="date" #Expdate value="{{updateCExp}}"> <br>
+                  <select class="form-control" #Status [value]="updateCStates">
+                    <option id="Actv">Active</option>
+                    <option id="Inactv">InActive</option>
+                  </select>
+                  <button class="btn btn-success"
+                          (click)="updateCompany(CompanyNo.value,Mobile.value,Email.value,Expdate.value,Status.value)">
+                    Update
+                  </button>
+                </div>
+              </div>
+
+
+            </div>
+
+
+          </div>
+          <div class="modal-footer">
+            {{updatemessage}}
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+
+    <hr class="solid">
+  </div>
+
+
+  <div class="col-sm-12">
+
+    <h3>Add Country & State</h3>
+
+    <div class="row">
+      <div class="col-sm-6">
+        Add Country:
+        <form method="post" #addCountry="ngForm" (ngSubmit)="saveCountry()" class="form-group">
+          <label>Country Name :</label>
+          <input type="text" class="form-control border-success" name="companyPublicLibilityNo"
+                 [(ngModel)]="country.CName">
+
+          <br>
+
+          <button class="btn btn-primary">Add</button>
+        </form>
+      </div>
+
+      <div class="col-sm-6">
+        Add States:
+        <form method="post" #addStates="ngForm" (ngSubmit)="saveStates()" class="form-group">
+          <label>Country :</label>
+          <select class="form-control" name="companyCountry" required ngModel="" #cCountry="ngModel"
+                  [(ngModel)]="states.CuName">
+
+            <option *ngFor="let coun of countryList" id="{{coun.id}}" [value]='coun.id'>{{coun.name}}</option>
+
+          </select>
+          <input type="text" class="form-control border-success" name="SName" [(ngModel)]="states.SName">
+
+          <button class="btn btn-primary">Add</button>
+        </form>
+
+      </div>
+    </div>
+    <hr class="solid">
+  </div>
+  <div class="col-sm-12">
+
+    <div class="row">
+
+      <div class="col-sm-4">
+
+        <form method="post" class="form-group" (ngSubmit)="saveEvtDates()">
+
+          <label>Public Hollyday:</label>
+          <input type="text" class="form-control border-primary" name="evtname" #pday [(ngModel)]="EvtCalander.evtname" >
+
+          <label>Date:</label>
+          <input type="date" class="form-control border-primary" name="evtday" #pday [(ngModel)]="EvtCalander.evtdate">
+
+          <label>Country :</label>
+          <select class="form-control" name="companyCountry" required ngModel="" #evtcountry="ngModel"
+                  [(ngModel)]="EvtCalander.evtcountry" (change)="loardState(evtcountry)">
+
+            <option *ngFor="let country2 of countryList" id="{{country2.id}}"
+                    value="{{country2.id}}">{{country2.name}}</option>
+
+          </select>
+
+
+          <label>Country state :</label>
+          <select class="form-control" name="companyStates" required ngModel="" #evtstates="ngModel"
+                  [(ngModel)]="EvtCalander.evtstates">
+
+
+            <option *ngFor="let sta2 of state" id="{{sta2.id}}" [value]='sta2.id'>{{sta2.name}}
+
+          </select>
+
+          <button class="btn btn-primary">Submit</button>
+
+        </form>
+
+      </div>
+      <div class="col-sm-8">
+
+        <label>Start Date :</label>
+        <input type="date" class="form-control border-primary" name="companyStatusSearchDate1" #evtdate1>
+
+        <label>End Date:</label>
+        <input type="date" class="form-control border-primary" name="companyStatusSearchDate2" #evtdate2>
+
+        <button class="btn btn-success" (click)="sortEvetDates(evtdate1.value,evtdate2.value)">Search</button>
+        <br>
+        <table class="table table-bordered">
+          <thead>
+          <tr>
+            <th>No</th>
+            <th>Holiday Name</th>
+            <th>Date</th>
+            <th>Country</th>
+            <th>State</th>
+            <th>Delete</th>
+          </tr>
+          </thead>
+
+          <tr *ngFor="let holidays of EvtTable |paginate: {itemsPerPage:5, currentPage: eventsCurrentPage}">
+            <td>{{holidays.Id}}</td>
+            <td>{{holidays.Name}}</td>
+            <td>{{holidays.EDate}}</td>
+            <td>{{holidays.Country}}</td>
+            <td>{{holidays.State}}</td>
+            <td>
+              <button class="btn btn-danger" (click)="deleteEvtDate(holidays.Id)">Delete</button>
+            </td>
+          </tr>
+
+          <tbody>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="eventsCurrentPage=$event"></pagination-controls>
+      </div>
+    </div>
+
+  </div>
+  <button (click)="abc()">click</button>
+</div>
+
+
